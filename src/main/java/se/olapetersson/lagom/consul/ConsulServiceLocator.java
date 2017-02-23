@@ -49,8 +49,9 @@ public class ConsulServiceLocator implements ServiceLocator {
 
     @Override
     public <T> CompletionStage<Optional<T>> doWithService(String serviceName, Descriptor.Call<?, ?> call, Function<URI, CompletionStage<T>> function) {
-        info(format("doingWithService %s", serviceName));
+        info("doingWithService {}", serviceName);
         URI randomServiceUri = getRandomServiceUri(serviceName);
+        info("Got a serviceUri {} ", randomServiceUri.getHost());
         CompletionStage<Optional<T>> optionalCompletionStage = function.apply(randomServiceUri).thenApply(x -> Optional.of(x));
         return optionalCompletionStage;
     }
