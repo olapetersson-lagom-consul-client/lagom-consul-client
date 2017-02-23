@@ -1,0 +1,14 @@
+# This is an example configuration file. You should add this configuration in your app at
+# src/main/resources/application.conf
+
+play.modules.enabled += se.olapetersson.lagom.consul.ConsulServiceLocatorModule
+
+lagom {
+  discovery {
+    consul {
+      agent-hostname = "dev-consul"   # hostname or IP-address for the Consul agent
+      agent-port     = 8500          # port for the Consul agent
+      uri-scheme     = "http"        # for example: http or https
+    }
+  }
+}
