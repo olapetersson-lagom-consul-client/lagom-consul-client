@@ -10,6 +10,8 @@ You need to have a [consul instance](https://www.consul.io/) running which your 
 Your application needs to enable the module in `src/main/resources/application.conf` and add 
 configuration for your consul agents hostname, port and the protocol of your service:
 
+As the lib is currently not on maven central you need to clone it and perform a `mvn clean install`
+
 ### Configuration
 
 Add the mvn dependency in the pom of your service
@@ -42,7 +44,7 @@ To register your service you need to create an instance of ConsulService and reg
 
 ```
  @Inject
-    public CallModule(Environment environment, Configuration configuration) throws UnknownHostException {
+    public ExampleModule(Environment environment, Configuration configuration) throws UnknownHostException {
         this.environment = environment;
         this.configuration = configuration;
         this.consulConfiguration = new ConsulConfiguration(configuration);
@@ -52,8 +54,20 @@ To register your service you need to create an instance of ConsulService and reg
     private void registerService() throws UnknownHostException {
         int servicePort = Integer.parseInt(configuration.getString("http.port"));
         String hostname = InetAddress.getLocalHost().getHostAddress();
-        play.Logger.info("Trying to register call service with : {}:{}", hostname, servicePort);
-        ConsulService consulService = new ConsulService("call", hostname, servicePort, "health/");
+        
+        //Create a ConsulService(serviceName, serviceHostName, servicePort) and register it
+        ConsulService consulService = new ConsulService("call", hostname, servicePort);
         consulService.registerService(consulConfiguration.getAgentHostname(), consulConfiguration.getAgentPort());
     }
 ```    
+
+#### ConsulService and health-checks
+
+If your service exposes a healtcheck-endpoint this can be registered along with the service via the signature.
+
+```
+  public ConsulService(String serviceName, String hostname, int port, String healthEndpoint)
+```
+
+# Sample 
+TBD
