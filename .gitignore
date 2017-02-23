@@ -1,0 +1,6 @@
+target/
+*.iml
+node_modules/
+.idea/
+logs/
+*/logs/
