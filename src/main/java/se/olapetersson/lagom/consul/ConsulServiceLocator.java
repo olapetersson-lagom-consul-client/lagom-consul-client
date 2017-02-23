@@ -37,7 +37,7 @@ public class ConsulServiceLocator implements ServiceLocator {
 
     @Override
     public CompletionStage<Optional<URI>> locate(String serviceName) {
-        debug(format("Locating %s", serviceName));
+        debug("Locating {}", serviceName);
         return supplyAsync(() -> Optional.ofNullable(getRandomServiceUri(serviceName)));
     }
 
